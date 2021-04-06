@@ -1,70 +1,91 @@
 import '../index.css';
+import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 
 function App() {
+
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+
+  function handleEditAvatarClick() {
+    setEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+  }
+
+  function handleEditProfileClick() {
+    setEditProfilePopupOpen(!isEditProfilePopupOpen);
+  }
+
+  function handleAddPlaceClick() {
+    setAddPlacePopupOpen(!isAddPlacePopupOpen);
+  }
+
+  function closeAllPopups() {
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+  }
+
   return (
     <>
       <div className="page">
         <Header />
-        <Main />
+        <Main
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+        />
         <Footer />
         {/* Popup редактирования профиля */}
-        <section className="popup popup_section_profile-edit">
-          <div className="popup__container">
-            <button type="button" className="popup__button-close popup__button-close_section_profile-edit" />
-            <h2 className="popup__title">Редактировать профиль</h2>
-            <form noValidate name="form-profile-edit" className="form form_section_profile-edit">
-              <fieldset className="form__fields">
-                <label className="label">
-                  <input type="text" className="form__input form__input_field_profile-name"
-                    name="profileName" required minLength="2" maxLength="40" id="profile-name-input" />
-                  <span className="form__error profile-name-input-error" />
-                </label>
-                <label className="label">
-                  <input type="text" className="form__input form__input_field_profile-status"
-                    name="profileStatus" required minLength="2" maxLength="200" id="profile-status-input" />
-                  <span className="form__error profile-status-input-error" />
-                </label>
-                <button type="submit" className="form__button form__button_section_profile-edit">Сохранить</button>
-              </fieldset>
-            </form>
-          </div>
-        </section>
+        <PopupWithForm
+          name="profile-edit"
+          title="Редактировать профиль"
+          textOnSubmitButton="Сохранить"
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+        >
+          <fieldset className="form__fields">
+            <label className="label">
+              <input type="text" className="form__input form__input_field_profile-name"
+                name="profileName" required minLength="2" maxLength="40" id="profile-name-input" />
+              <span className="form__error profile-name-input-error" />
+            </label>
+            <label className="label">
+              <input type="text" className="form__input form__input_field_profile-status"
+                name="profileStatus" required minLength="2" maxLength="200" id="profile-status-input" />
+              <span className="form__error profile-status-input-error" />
+            </label>
+          </fieldset>
+        </PopupWithForm>
         {/* Popup добавления карточки */}
-        <section className="popup popup_section_card-add">
-          <div className="popup__container">
-            <button type="button" className="popup__button-close popup__button-close_section_card-add" />
-            <h2 className="popup__title">Новое место</h2>
-            <form noValidate name="form-card-add" className="form form_section_card-add">
-              <fieldset className="form__fields">
-                <label className="label">
-                  <input type="text" placeholder="Название" className="form__input form__input_field_card-name"
-                    name="cardName" required minLength="2" maxLength="30" id="card-name-input" />
-                  <span className="form__error card-name-input-error" />
-                </label>
-                <label className="label">
-                  <input type="url" placeholder="Ссылка на картинку" className="form__input form__input_field_card-link"
-                    name="cardLink" required id="card-link-input" />
-                  <span className="form__error card-link-input-error" />
-                </label>
-                <button type="submit" className="form__button form__button_section_card-add">Добавить</button>
-              </fieldset>
-            </form>
-          </div>
-        </section>
+        <PopupWithForm
+          name="card-add"
+          title="Новое место"
+          textOnSubmitButton="Добавить"
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+        >
+          <fieldset className="form__fields">
+            <label className="label">
+              <input type="text" placeholder="Название" className="form__input form__input_field_card-name"
+                name="cardName" required minLength="2" maxLength="30" id="card-name-input" />
+              <span className="form__error card-name-input-error" />
+            </label>
+            <label className="label">
+              <input type="url" placeholder="Ссылка на картинку" className="form__input form__input_field_card-link"
+                name="cardLink" required id="card-link-input" />
+              <span className="form__error card-link-input-error" />
+            </label>
+          </fieldset>
+        </PopupWithForm>
         {/* Popup подтверждения удаления карточки */}
-        <section className="popup popup_section_delete-confirm">
-          <div className="popup__container">
-            <button type="button" className="popup__button-close popup__button-close_section_delete-confirm" />
-            <h2 className="popup__title popup__title_section_delete-confirm">Вы уверены?</h2>
-            <form noValidate name="form-delete-confirm" className="form form_section_delete-confirm">
-              <button type="submit" className="form__button form__button_section_delete-confirm">Да</button>
-            </form>
-          </div>
-        </section>
+        <PopupWithForm name="delete-confirm" title="Вы уверены?" textOnSubmitButton="Да" />
         {/* Popup увеличения изображений */}
+        <ImagePopup />
         <section className="popup popup_section_image-zoom">
           <div className="popup__zoom-image">
             <button type="button" className="popup__button-close popup__button-close_section_image-zoom" />
@@ -73,22 +94,21 @@ function App() {
           </div>
         </section>
         {/* Popup обновления аватара */}
-        <section className="popup popup_section_update-avatar">
-          <div className="popup__container">
-            <button type="button" className="popup__button-close popup__button-close_section_update-avatar" />
-            <h2 className="popup__title">Обновить аватар</h2>
-            <form noValidate name="form-update-avatar" className="form form_section_update-avatar">
-              <fieldset className="form__fields">
-                <label className="label">
-                  <input type="url" placeholder="Ссылка на фотографию" className="form__input form__input_field_avatar-link"
-                    name="avatarLink" required id="avatar-link-input" />
-                  <span className="form__error avatar-link-input-error" />
-                </label>
-                <button type="submit" className="form__button form__button_section_update-avatar">Сохранить</button>
-              </fieldset>
-            </form>
-          </div>
-        </section>
+        <PopupWithForm
+          name="update-avatar"
+          title="Обновить аватар"
+          textOnSubmitButton="Сохранить"
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+        >
+          <fieldset className="form__fields">
+            <label className="label">
+              <input type="url" placeholder="Ссылка на фотографию" className="form__input form__input_field_avatar-link"
+                name="avatarLink" required id="avatar-link-input" />
+              <span className="form__error avatar-link-input-error" />
+            </label>
+          </fieldset>
+        </PopupWithForm>
       </div>
       {/* template для карточек */}
       <template id="card-template">
