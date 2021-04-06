@@ -1,34 +1,15 @@
-import avatar from './images/avatar.jpg';
-import './index.css';
+import '../index.css';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
 
 function App() {
   return (
     <>
       <div className="page">
-        <header className="header">
-          <a href="#" target="_self" className="header__logo" />
-        </header>
-        <main className="main">
-          <section className="profile">
-            <div className="profile__container">
-              <a target="_self" href="#" className="profile__cover">
-                <img alt="Аватарка" src={avatar} className="profile__avatar" />
-              </a>
-              <div className="profile__info">
-                <h1 className="profile__name">Жак-Ив Кусто</h1>
-                <button type="button" className="profile__button-edit" />
-                <p className="profile__status">Исследователь океана</p>
-              </div>
-            </div>
-            <button type="button" className="profile__button-add" />
-          </section>
-          <section>
-            <ul className="elements" />
-          </section>
-        </main>
-        <footer className="footer">
-          <p className="footer__copyright">&copy; 2021. Mesto-React Russia</p>
-        </footer>
+        <Header />
+        <Main />
+        <Footer />
         {/* Popup редактирования профиля */}
         <section className="popup popup_section_profile-edit">
           <div className="popup__container">
