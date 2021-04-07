@@ -1,17 +1,24 @@
-import '../index.css';
+// портируем для хуков
 import React from 'react';
+// портируем стили и необходимые компоненты
+import '../index.css';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 
+// основной компонент приложения
 function App() {
 
+  // создаем state переменные для попапов
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  // создаем state переменную для загрузки данных карточки в попап
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
+  // изменяем значения соответствующих переменных состояния
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -24,22 +31,33 @@ function App() {
     setAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
+  function handleCardClick(selectedCard) {
+    setSelectedCard(selectedCard);
+  }
+
+  // сбрасываем все state переменные в false для закрытия попапа
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+    setSelectedCard(false);
   }
 
+  // разметка
   return (
     <div className="page">
+      {/* компонент Header */}
       <Header />
+      {/* компонент Main с пропсами для открытия попапов */}
       <Main
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
+      {/* компонент Footer */}
       <Footer />
-      {/* Popup редактирования профиля */}
+      {/* Popup редактирования профиля: пропсы для наполнения и управления попапом */}
       <PopupWithForm
         name="profile-edit"
         title="Редактировать профиль"
@@ -47,6 +65,7 @@ function App() {
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
       >
+        {/* разметка props.children */}
         <fieldset className="form__fields">
           <label className="label">
             <input type="text" className="form__input form__input_field_profile-name"
@@ -60,7 +79,7 @@ function App() {
           </label>
         </fieldset>
       </PopupWithForm>
-      {/* Popup добавления карточки */}
+      {/* Popup добавления карточки: пропсы для наполнения и управления попапом */}
       <PopupWithForm
         name="card-add"
         title="Новое место"
@@ -68,6 +87,7 @@ function App() {
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
       >
+        {/* разметка props.children */}
         <fieldset className="form__fields">
           <label className="label">
             <input type="text" placeholder="Название" className="form__input form__input_field_card-name"
@@ -81,18 +101,11 @@ function App() {
           </label>
         </fieldset>
       </PopupWithForm>
-      {/* Popup подтверждения удаления карточки */}
+      {/* Popup подтверждения удаления карточки: подготовлен, но не реализован */}
       <PopupWithForm name="delete-confirm" title="Вы уверены?" textOnSubmitButton="Да" />
-      {/* Popup увеличения изображений */}
-      <ImagePopup />
-      <section className="popup popup_section_image-zoom">
-        <div className="popup__zoom-image">
-          <button type="button" className="popup__button-close popup__button-close_section_image-zoom" />
-          <img src="#" alt="#" className="popup__image" />
-          <h2 className="popup__title-zoom-image" />
-        </div>
-      </section>
-      {/* Popup обновления аватара */}
+      {/* Popup увеличения изображений: пропсы для наполнения и управления попапом */}
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      {/* Popup обновления аватара: пропсы для наполнения и управления попапом */}
       <PopupWithForm
         name="update-avatar"
         title="Обновить аватар"
@@ -100,6 +113,7 @@ function App() {
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
       >
+        {/* разметка props.children */}
         <fieldset className="form__fields">
           <label className="label">
             <input type="url" placeholder="Ссылка на фотографию" className="form__input form__input_field_avatar-link"

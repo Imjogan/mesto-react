@@ -1,5 +1,7 @@
+// компонент Header
 function Header() {
   
+  // разметка
   return (
     <header className="header">
       <a href="#" target="_self" className="header__logo" />

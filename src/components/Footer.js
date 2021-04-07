@@ -1,5 +1,7 @@
+// компонент Footer
 function Footer() {
   
+  // разметка
   return (
     <footer className="footer">
       <p className="footer__copyright">&copy; 2021. Mesto-React Russia</p>

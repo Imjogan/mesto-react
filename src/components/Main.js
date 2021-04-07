@@ -1,32 +1,40 @@
+// портируем для хуков
 import React from 'react';
-import api from '../utils/Api';
+// портируем необходимые компоненты
+import api from '../utils/api';
+import Card from './Card';
 
+// компонент Main содержимого
 function Main(props) {
 
+  // создаем state переменные для даных пользователя
   const [userName, setUserName] = React.useState('');
   const [userDescription , setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
 
+  // создаем state переменную для карточек
   const [cards, setCards] = React.useState([]);
 
+  // загружаем данные пользователя и карточек
   React.useEffect(() => {
     // получаем данные о пользователе и карточках
     api.getInitialData()
     .then(data => {
+      // деструктуризация данных для удобства
       const [initialCardsData, initialUserData] = data;
+      // запускаем сеттеры с информацией
       setUserAvatar(initialUserData.avatar);
       setUserName(initialUserData.name);
       setUserDescription(initialUserData.about);
-
-      initialCardsData.forEach(card => {
-        setCards(cards => [...cards, card]);
-      });
-      
+      // сеттер с массивом карточек
+      setCards(initialCardsData);
     }).catch(error => {
       console.log(error);
     })
+    // зависимостей нет, запускаем один раз при загрузке страницы
   }, []);
 
+  // разметка
   return (
     <main className="main">
       <section className="profile">
@@ -44,18 +52,10 @@ function Main(props) {
       </section>
       <section>
         <ul className="elements">
-          {cards.map(card => (
-            <li key={card._id} className="element">
-              <button type="button" className="element__trash-button" />
-              <img src={card.link} alt="Фотография" className="element__image" />
-              <div className="element__container">
-                <h2 className="element__title">{card.name}</h2>
-                <div className="element__like-group">
-                  <button type="button" className="element__like" />
-                  <h3 className="element__like-counter">{card.likes.length}</h3>
-                </div>
-              </div>
-            </li>
+          {cards.map(element => (
+            // создаем компонент Card для каждого элемента state переменной
+            // задаем каждому экземпляру компонента уникальный ключ
+            <Card cardTransfer={props.onCardClick} key={element._id} card={element} />
           ))}
         </ul> 
       </section>

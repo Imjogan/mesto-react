@@ -1,7 +1,10 @@
+// компонент попап шаблон для форм
 function PopupWithForm(props) {
+
+  // разметка
   return (
+    // проверяем условие: если пропс не false - добавляем класс
     <section className={`popup popup_section_${props.name} ${props.isOpen && 'popup_opened'}`}>
-    {/* <section className={`popup popup_section_${props.name} ${(props.isOpen && !props.isClose) ? 'popup_opened' : ''}`}> */}
       <div className="popup__container">
         <button onClick={props.onClose} type="button" className="popup__button-close" />
         <h2 className="popup__title">{props.title}</h2>

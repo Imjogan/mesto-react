@@ -3,7 +3,7 @@ class Api {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
   }
-
+  
   // получаем информацию о карточках
   getInitialCards() {
     return fetch(this._baseUrl+'/cards', {
