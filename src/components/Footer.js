@@ -1,10 +1,12 @@
-// компонент Footer
 function Footer() {
   
-  // разметка
+  const currentDate = new Date;
+
   return (
-    <footer className="footer">
-      <p className="footer__copyright">&copy; 2021. Mesto-React Russia</p>
+    <footer className = "footer">
+      <p className = "footer__copyright">
+        &copy; {currentDate.getFullYear()}. Mesto-React Russia
+      </p>
     </footer>
   );
 } 

@@ -1,14 +1,22 @@
-// компонент попап открытой карточки
-function ImagePopup(props) {
+import filler from '../images/filler.jpg'
 
-  // разметка
+function ImagePopup({card, onClose}) {
+
   return (
-    // проверяем условие: если пропс не false - добавляем класс
-    <section className={`popup popup_section_image-zoom ${props.card && 'popup_opened'}`}>
-      <div className="popup__zoom-image">
-        <button onClick={props.onClose} type="button" className="popup__button-close" />
-        <img src={props.card.link} alt={props.card.name} className="popup__image" />
-        <h2 className="popup__title-zoom-image">{props.card.name}</h2>
+    <section className = {`popup ${card && 'popup_opened'}`}>
+      <div className = "popup__zoom-image">
+        <button onClick = {onClose} type = "button" className = "popup__button-close" />
+        <img
+          src = {card ? card.link : null}
+          alt = {card? card.name : null}
+          className = "popup__image"
+          onError = {evt => {
+            evt.target.onerror = null;
+            evt.target.src = filler;
+            evt.target.alt = "Ошибка загрузки изображения";
+          }}  
+        />
+        <h2 className = "popup__title-zoom-image"> {card? card.name : null} </h2>
       </div>
     </section>
   );
