@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import filler from '../images/filler.jpg';
 
-function Image({ card, onClick, classStyleName }) {
+function Image({ src, alt, onClick, className }) {
 
   const [isLoadError, setIsLoadError] = useState(false);
+
+  useEffect(() => setIsLoadError(false), [ src ]);
 
   function handleLoadError() {
     setIsLoadError(true);
@@ -12,14 +14,9 @@ function Image({ card, onClick, classStyleName }) {
   return (
     <img
       onClick={onClick}
-      src={card ? (isLoadError ? filler : card.link) : null}
-      alt={
-        card ? (isLoadError ?
-          "Гомер Симпсон передает, что в адресе изображения возникла ошибка" :
-          (`На фотографии - ${card.name}`)) :
-          ''
-      }
-      className={classStyleName}
+      src={isLoadError ? filler : src}
+      alt={`Фото: ${alt}`}
+      className={className}
       onError={handleLoadError}
     />
   );

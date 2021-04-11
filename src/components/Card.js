@@ -1,19 +1,19 @@
 import Image from './Image';
 
-function Card({ cardTransfer, card }) {
+function Card({ getCard, card }) {
 
-  // передаем данные карточки при вызове
   function handleClickImage() {
-    cardTransfer(card);
+    getCard(card);
   }
 
   return (
     <li className="element">
       <button type="button" className="element__trash-button" />
       <Image
+        src={card.link}
+        alt={card.name}
+        className="element__image"
         onClick={handleClickImage}
-        card={card}
-        classStyleName="element__image"
       />
       <div className="element__container">
         <h2 className="element__title"> {card.name} </h2>

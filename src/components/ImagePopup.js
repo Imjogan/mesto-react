@@ -7,8 +7,9 @@ function ImagePopup({ card, onClose }) {
       <div className="popup__zoom-image">
         <button onClick={onClose} type="button" className="popup__button-close" />
         <Image
-          card={card}
-          classStyleName="popup__image"
+          src={card ? card.link : null}
+          alt={card ? card.name : null}
+          className="popup__image"
         />
         <h2 className="popup__title-zoom-image"> {card ? card.name : null} </h2>
       </div>

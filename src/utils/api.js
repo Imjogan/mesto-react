@@ -5,8 +5,8 @@ class Api {
   }
   
   // получаем информацию о карточках
-  getInitialCards() {
-    return fetch(this._baseUrl+'/cards', {
+  getCards() {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
       headers: this._headers
     })
@@ -21,7 +21,7 @@ class Api {
 
   // получаем информацию о пользователе
   getUserInfo() {
-    return fetch(this._baseUrl+'/users/me', {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: this._headers
     })
@@ -35,12 +35,12 @@ class Api {
   }
 
   getInitialData() {
-    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
+    return Promise.all([this.getCards(), this.getUserInfo()]);
   }
 
   // отправляем информацию о пользователе
   setUserInfo(name, status) {
-    return fetch(this._baseUrl+'/users/me', {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
@@ -59,7 +59,7 @@ class Api {
 
   // создаем карточку
   createUserInfo(name, link) {
-    return fetch(this._baseUrl+'/cards', {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
@@ -78,7 +78,7 @@ class Api {
 
   // удаляем карточку
   deleteCard(cardID) {
-    return fetch(this._baseUrl+'/cards/'+cardID, {
+    return fetch(`${this._baseUrl}/cards/${cardID}`, {
       method: 'DELETE',
       headers: this._headers
     })
@@ -93,7 +93,7 @@ class Api {
 
   // ставим лайк на карточку
   setLike(cardID) {
-    return fetch(this._baseUrl+'/cards/likes/'+cardID, {
+    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
       method: 'PUT',
       headers: this._headers
     })
@@ -108,7 +108,7 @@ class Api {
 
   // ставим лайк на карточку
   deleteLike(cardID) {
-    return fetch(this._baseUrl+'/cards/likes/'+cardID, {
+    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
       method: 'DELETE',
       headers: this._headers
     })
@@ -123,7 +123,7 @@ class Api {
 
   // обновляем аватар
   updateAvatar(avatarUrl) {
-    return fetch(this._baseUrl+'/users/me/avatar', {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
