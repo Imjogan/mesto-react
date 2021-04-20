@@ -14,7 +14,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -29,7 +28,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -48,7 +46,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -67,7 +64,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -82,7 +78,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -97,7 +92,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -115,7 +109,6 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
@@ -123,12 +116,10 @@ class Api {
 
 // создаем класс для связи с сервером
 const api = new Api({
-  // базовый адрес обращения
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-21',
   headers: {
     // уникальный токен пользователя
     authorization: 'a3ab0050-d01a-4f5a-9bb4-4a039b0aa641',
-    // MIME Type - формат отправляемых данных (формат JSON)
     'Content-Type': 'application/json'
   }
 });

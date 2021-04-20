@@ -5,6 +5,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -50,6 +51,14 @@ function App() {
     setSelectedCard(null);
   }
 
+  const handleUpdateUser = (obj) => {
+    api.setUserInfo(obj.name, obj.about)
+      .then(res => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
@@ -61,40 +70,7 @@ function App() {
           onCardClick={handleCardClick}
         />
         <Footer />
-        <PopupWithForm
-          name="profile-edit"
-          title="Редактировать профиль"
-          submitButtonText="Сохранить"
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-        >
-          <fieldset className="form__fields">
-            <label className="label">
-              <input
-                type="text"
-                className="form__input form__input_field_profile-name"
-                name="profileName"
-                required
-                minLength="2"
-                maxLength="40"
-                id="profile-name-input"
-              />
-              <span className="form__error profile-name-input-error" />
-            </label>
-            <label className="label">
-              <input
-                type="text"
-                className="form__input form__input_field_profile-status"
-                name="profileStatus"
-                required
-                minLength="2"
-                maxLength="200"
-                id="profile-status-input"
-              />
-              <span className="form__error profile-status-input-error" />
-            </label>
-          </fieldset>
-        </PopupWithForm>
+        <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
         <PopupWithForm
           name="card-add"
           title="Новое место"

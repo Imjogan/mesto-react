@@ -21,20 +21,21 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(likeOnCard => likeOnCard._id === currentUser._id);
+    const isLiked = card.likes.some(likeOnCard =>
+      likeOnCard._id === currentUser._id);
 
     api.toggleCardLike(card._id, isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((oldCard) => oldCard._id === card._id ? newCard : oldCard));
+        setCards((state) =>
+          state.map((oldCard) =>
+            oldCard._id === card._id ? newCard : oldCard));
       });
   }
 
   function handleCardDelete(card) {
 
     api.deleteCard(card._id)
-      .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
+      .then(() => setCards(cards.filter(oldCard => oldCard._id !== card._id)));
   }
 
   return (
