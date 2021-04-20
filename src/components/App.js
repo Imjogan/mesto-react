@@ -20,21 +20,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  // загружаем данные пользователя и карточек
+// загружаем данные пользователя и карточек
   useEffect(() => {
-    api.getCards()
+    api.getInitialData()
       .then(data => {
-        setCards(data);
-      }).catch(error => {
-        console.log(error);
-      })
-  }, []);
-
-  // загружаем данные пользователя
-  useEffect(() => {
-    api.getUserInfo()
-      .then(data => {
-        setCurrentUser(data);
+        const [cards, userInfo] = data;
+        setCards(cards);
+        setCurrentUser(userInfo);
       }).catch(error => {
         console.log(error);
       })

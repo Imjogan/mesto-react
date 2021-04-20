@@ -32,6 +32,10 @@ class Api {
     });
   }
 
+  getInitialData() {
+    return Promise.all([this.getCards(), this.getUserInfo()]);
+  }
+
   // отправляем информацию о пользователе
   setUserInfo(name, status) {
     return fetch(`${this._baseUrl}/users/me`, {
