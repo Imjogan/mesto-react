@@ -51,7 +51,7 @@ class Api {
   }
 
   // создаем карточку
-  createUserInfo(name, link) {
+  createCard(name, link) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,

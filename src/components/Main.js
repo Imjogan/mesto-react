@@ -1,42 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
-import api from '../utils/api';
+import { useContext } from 'react';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCardLike, onCardDelete }) {
 
   const currentUser = useContext(CurrentUserContext);
-
-  const [cards, setCards] = useState([]);
-
-  // загружаем данные пользователя и карточек
-  useEffect(() => {
-    api.getCards()
-      .then(data => {
-        setCards(data);
-      }).catch(error => {
-        console.log(error);
-      })
-  }, []);
-
-
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(likeOnCard =>
-      likeOnCard._id === currentUser._id);
-
-    api.toggleCardLike(card._id, isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((oldCard) =>
-            oldCard._id === card._id ? newCard : oldCard));
-      });
-  }
-
-  function handleCardDelete(card) {
-
-    api.deleteCard(card._id)
-      .then(() => setCards(cards.filter(oldCard => oldCard._id !== card._id)));
-  }
 
   return (
     <main className="main">
@@ -65,8 +33,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         <ul className="elements">
           {cards.map(card => (
             <Card
-              onCardDelete={handleCardDelete}
-              onCardLike={handleCardLike}
+              onCardDelete={onCardDelete}
+              onCardLike={onCardLike}
               getCard={onCardClick}
               card={card}
               key={card._id}
