@@ -1,14 +1,14 @@
-function Image() {
-
+function RenderLoading() {
   return (
-    <img
-      onClick={onClick}
-      src={isLoadError ? filler : src}
-      alt={`Фото: ${alt}`}
-      className={className}
-      onError={handleLoadError}
-    />
+    <div className="loader-ring">
+      <div className="loader-ring__main">
+        <div className="loader-ring__child" />
+        <div className="loader-ring__child" />
+        <div className="loader-ring__child" />
+        <div className="loader-ring__child" />
+      </div>
+    </div>
   );
 }
 
-export default Image;
+export default RenderLoading;

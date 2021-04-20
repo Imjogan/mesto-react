@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import filler from '../images/filler.jpg';
 
 function Image({ src, alt, onClick, className }) {
-
   const [isLoadError, setIsLoadError] = useState(false);
 
-  useEffect(() => setIsLoadError(false), [ src ]);
+  useEffect(() => setIsLoadError(false), [src]);
 
   function handleLoadError() {
     setIsLoadError(true);
@@ -15,7 +14,7 @@ function Image({ src, alt, onClick, className }) {
     <img
       onClick={onClick}
       src={isLoadError ? filler : src}
-      alt={`Фото: ${alt}`}
+      alt={`Фото: ${alt ? alt : ''}`}
       className={className}
       onError={handleLoadError}
     />

@@ -3,14 +3,13 @@ class Api {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
   }
-  
+
   // получаем информацию о карточках
   getCards() {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
-      headers: this._headers
-    })
-    .then(res => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -22,9 +21,8 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: this._headers
-    })
-    .then(res => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -43,10 +41,9 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: name,
-        about: status
-      })
-    })
-    .then(res => {
+        about: status,
+      }),
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -61,10 +58,9 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: name,
-        link: link
-      })
-    })
-    .then(res => {
+        link: link,
+      }),
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -76,9 +72,8 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers
-    })
-    .then(res => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -90,9 +85,8 @@ class Api {
   toggleCardLike(cardId, hasLike) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: hasLike ? 'DELETE' : 'PUT',
-      headers: this._headers
-    })
-    .then(res => {
+      headers: this._headers,
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -106,10 +100,9 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: avatarUrl
-      })
-    })
-    .then(res => {
+        avatar: avatarUrl,
+      }),
+    }).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -124,8 +117,8 @@ const api = new Api({
   headers: {
     // уникальный токен пользователя
     authorization: 'a3ab0050-d01a-4f5a-9bb4-4a039b0aa641',
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 export default api;

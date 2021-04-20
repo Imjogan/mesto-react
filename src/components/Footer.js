@@ -1,5 +1,4 @@
 function Footer() {
-
   const currentDate = new Date();
 
   return (

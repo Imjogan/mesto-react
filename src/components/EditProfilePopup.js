@@ -2,8 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, buttonLoading }) {
   const currentUser = useContext(CurrentUserContext);
 
   const [name, setName] = useState('');
@@ -29,13 +28,13 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       name,
       about: description,
     });
-  }
+  };
 
   return (
     <PopupWithForm
       name="profile-edit"
       title="Редактировать профиль"
-      submitButtonText="Сохранить"
+      submitButtonText={buttonLoading ? 'Сохранение...' : 'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
