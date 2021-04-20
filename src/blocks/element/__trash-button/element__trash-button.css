@@ -11,6 +11,7 @@
     background-color: transparent;
     cursor: pointer;
     transition: opacity .4s;
+    display: none;
   }
     
   .element__trash-button:hover {

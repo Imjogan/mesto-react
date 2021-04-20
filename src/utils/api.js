@@ -34,10 +34,6 @@ class Api {
     });
   }
 
-  getInitialData() {
-    return Promise.all([this.getCards(), this.getUserInfo()]);
-  }
-
   // отправляем информацию о пользователе
   setUserInfo(name, status) {
     return fetch(`${this._baseUrl}/users/me`, {
@@ -77,8 +73,8 @@ class Api {
   }
 
   // удаляем карточку
-  deleteCard(cardID) {
-    return fetch(`${this._baseUrl}/cards/${cardID}`, {
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers
     })
@@ -91,25 +87,10 @@ class Api {
     });
   }
 
-  // ставим лайк на карточку
-  setLike(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  }
-
-  // ставим лайк на карточку
-  deleteLike(cardID) {
-    return fetch(`${this._baseUrl}/cards/likes/${cardID}`, {
-      method: 'DELETE',
+  // ставим/убираем лайк
+  toggleCardLike(cardId, hasLike) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: hasLike ? 'DELETE' : 'PUT',
       headers: this._headers
     })
     .then(res => {
