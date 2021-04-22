@@ -24,7 +24,11 @@ function PopupWithForm({
           className="form"
         >
           {children}
-          <button disabled={isValidity} type="submit" className={`form__button ${isValidity && 'form__button_disabled'}`}>
+          <button
+            disabled={isValidity}
+            type="submit"
+            className={`form__button ${isValidity && 'form__button_disabled'}`}
+          >
             {submitButtonText}
           </button>
         </form>
