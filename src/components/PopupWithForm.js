@@ -6,6 +6,7 @@ function PopupWithForm({
   onClose,
   onSubmit,
   children,
+  isValidity,
 }) {
   return (
     <section className={`popup ${isOpen && 'popup_opened'}`}>
@@ -23,7 +24,7 @@ function PopupWithForm({
           className="form"
         >
           {children}
-          <button type="submit" className="form__button">
+          <button disabled={isValidity} type="submit" className={`form__button ${isValidity && 'form__button_disabled'}`}>
             {submitButtonText}
           </button>
         </form>
