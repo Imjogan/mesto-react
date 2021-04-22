@@ -24,7 +24,7 @@ function Main({
             className="profile__cover"
           >
             <img
-              alt="Аватар пользователя"
+              alt={`Аватар пользователя ${currentUser.name}`}
               src={currentUser.avatar}
               className="profile__avatar"
             />

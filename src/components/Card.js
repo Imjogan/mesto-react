@@ -11,12 +11,10 @@ function Card({ getCard, card, onCardLike, onCardDelete }) {
     (likeOnCard) => likeOnCard._id === currentUser._id
   );
 
-  const cardLikeButtonClassName = `element__like ${
-    isLiked && 'element__like_active'
-  }`;
-  const cardDeleteButtonClassName = `element__trash-button ${
-    isOwn && 'element__trash-button_visible'
-  }`;
+  const cardLikeButtonClassName = `element__like
+    ${isLiked && 'element__like_active'}`;
+  const cardDeleteButtonClassName = `element__trash-button ${isOwn && 'element__trash-button_visible'
+    }`;
 
   function handleClickImage() {
     getCard(card);
