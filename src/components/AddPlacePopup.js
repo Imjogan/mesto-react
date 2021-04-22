@@ -9,7 +9,7 @@ const validators = {
   },
   cardLink: {
     required: (value) => value === '',
-    url: (value) => /^(ftp|http|https):\/\/[^ "]+$/.test(value),
+    url: (value) => !/^(ftp|http|https):\/\/[^ "]+$/.test(value),
   },
 };
 
@@ -137,7 +137,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
             type="url"
             placeholder="Ссылка на картинку"
             className={`form__input ${
-              (errors.cardLink.required || !errors.cardLink.url) &&
+              (errors.cardLink.required || errors.cardLink.url) &&
               'form__input_type_error'
             }`}
             name="cardLink"
@@ -148,12 +148,12 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           />
           <span
             className={`form__error ${
-              (errors.cardLink.required || !errors.cardLink.url) &&
+              (errors.cardLink.required || errors.cardLink.url) &&
               'form__error_visible'
             }`}
           >
             {' '}
-            {errors.cardLink.required || !errors.cardLink.url
+            {errors.cardLink.required || errors.cardLink.url
               ? errors.cardLink.required
                 ? 'Поле обязательно для заполнения'
                 : 'Введите URL'
