@@ -29,7 +29,8 @@ function App() {
 
   // загружаем данные пользователя и карточек
   useEffect(() => {
-    api.getInitialData()
+    api
+      .getInitialData()
       .then((data) => {
         const [cards, userInfo] = data;
         setDataLoading(false);
@@ -46,11 +47,12 @@ function App() {
       (likeOnCard) => likeOnCard._id === currentUser._id
     );
 
-    api.toggleCardLike(card._id, isLiked)
+    api
+      .toggleCardLike(card._id, isLiked)
       .then((newCard) => {
         setCards((state) =>
           state.map((oldCard) => (oldCard._id === card._id ? newCard : oldCard))
-        )
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -64,10 +66,12 @@ function App() {
 
   function handleDeleteConfirm(card) {
     setIsLoadingConfirm(true);
-    api.deleteCard(card._id)
+    api
+      .deleteCard(card._id)
       .then(() => {
         setCards((oldCards) =>
-          oldCards.filter((oldCard) => oldCard._id !== card._id));
+          oldCards.filter((oldCard) => oldCard._id !== card._id)
+        );
         closeAllPopups();
         setIsLoadingConfirm(false);
       })
@@ -78,7 +82,8 @@ function App() {
 
   const handleAddPlaceSubmit = (newCard) => {
     setIsLoadingCardAdd(true);
-    api.createCard(newCard.name, newCard.link)
+    api
+      .createCard(newCard.name, newCard.link)
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopups();
@@ -91,7 +96,8 @@ function App() {
 
   const handleUpdateUser = (userObj) => {
     setIsLoadingProfileInfo(true);
-    api.setUserInfo(userObj.name, userObj.about)
+    api
+      .setUserInfo(userObj.name, userObj.about)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -104,7 +110,8 @@ function App() {
 
   const handleUpdateAvatar = (avatarObj) => {
     setIsLoadingProfileAvatar(true);
-    api.updateAvatar(avatarObj.avatar)
+    api
+      .updateAvatar(avatarObj.avatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
