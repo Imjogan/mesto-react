@@ -26,6 +26,10 @@ function App() {
   const [isLoadingProfileAvatar, setIsLoadingProfileAvatar] = useState(false);
   const [isLoadingConfirm, setIsLoadingConfirm] = useState(false);
   const [currentDeletionCard, setCurrentDeletionCard] = useState(null);
+  const [isSubmittingProfileInfo, setIsSubmittingProfileInfo] = useState(false);
+  const [isSubmittingCardAdd, setIsSubmittingCardAdd] = useState(false);
+  const [isSubmittingDeleteConfirm, setIsSubmittingDeleteConfirm] = useState(false);
+  const [isSubmittingProfileAvatar, setIsSubmittingProfileAvatar] = useState(false);
 
   // загружаем данные пользователя и карточек
   useEffect(() => {
@@ -65,6 +69,7 @@ function App() {
   }
 
   function handleDeleteConfirm(card) {
+    setIsSubmittingDeleteConfirm(true);
     setIsLoadingConfirm(true);
     api
       .deleteCard(card._id)
@@ -73,52 +78,67 @@ function App() {
           oldCards.filter((oldCard) => oldCard._id !== card._id)
         );
         closeAllPopups();
-        setIsLoadingConfirm(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoadingConfirm(false);
+        setIsSubmittingDeleteConfirm(false);
       });
   }
 
   const handleAddPlaceSubmit = (newCard) => {
+    setIsSubmittingCardAdd(true);
     setIsLoadingCardAdd(true);
     api
       .createCard(newCard.name, newCard.link)
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopups();
-        setIsLoadingCardAdd(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoadingCardAdd(false);
+        setIsSubmittingCardAdd(false);
       });
   };
 
   const handleUpdateUser = (userObj) => {
+    setIsSubmittingProfileInfo(true);
     setIsLoadingProfileInfo(true);
     api
       .setUserInfo(userObj.name, userObj.about)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
-        setIsLoadingProfileInfo(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoadingProfileInfo(false);
+        setIsSubmittingProfileInfo(false);
       });
   };
 
   const handleUpdateAvatar = (avatarObj) => {
+    setIsSubmittingProfileAvatar(true);
     setIsLoadingProfileAvatar(true);
     api
       .updateAvatar(avatarObj.avatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
-        setIsLoadingProfileAvatar(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoadingProfileAvatar(false);
+        setIsSubmittingProfileAvatar(false);
       });
   };
 
@@ -168,12 +188,14 @@ function App() {
             onUpdateUser={handleUpdateUser}
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
+            isSubmitting={isSubmittingProfileInfo}
           />
           <AddPlacePopup
             isLoading={isLoadingCardAdd}
             isOpen={isAddPlacePopupOpen}
             onAddPlace={handleAddPlaceSubmit}
             onClose={closeAllPopups}
+            isSubmitting={isSubmittingCardAdd}
           />
           <ConfirmPopup
             isOpen={isConfirmPopupOpen}
@@ -181,6 +203,7 @@ function App() {
             onDeleteCard={handleDeleteConfirm}
             onClose={closeAllPopups}
             isLoading={isLoadingConfirm}
+            isSubmitting={isSubmittingDeleteConfirm}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <EditAvatarPopup
@@ -188,6 +211,7 @@ function App() {
             isOpen={isEditAvatarPopupOpen}
             onUpdateAvatar={handleUpdateAvatar}
             onClose={closeAllPopups}
+            isSubmitting={isSubmittingProfileAvatar}
           />
         </CurrentUserContext.Provider>
       )}

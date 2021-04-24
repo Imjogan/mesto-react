@@ -15,7 +15,13 @@ const validators = {
   },
 };
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
+function EditProfilePopup({
+  isOpen,
+  onClose,
+  onUpdateUser,
+  isLoading,
+  isSubmitting,
+}) {
   const currentUser = useContext(CurrentUserContext);
 
   const [formValues, setFormValues] = useState({
@@ -102,6 +108,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       isValidity={isSubmitDisabled}
+      isSubmitting={isSubmitting}
     >
       <fieldset className="form__fields">
         <label className="label">

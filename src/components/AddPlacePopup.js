@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { validationResult } from '../utils/constants';
+
+const minInputLength = 2,
+  maxInputLength = 30;
 
 const validators = {
   cardName: {
     required: (value) => value === '',
-    minLength: (value) => value.length < 3,
-    maxLength: (value) => value.length > 30,
+    minLength: (value) => value.length < minInputLength,
+    maxLength: (value) => value.length > maxInputLength,
   },
   cardLink: {
     required: (value) => value === '',
@@ -13,7 +17,7 @@ const validators = {
   },
 };
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting }) {
   const [formValues, setFormValues] = useState({
     cardName: '',
     cardLink: '',
@@ -59,19 +63,14 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
     function validateInputs() {
       const { cardName, cardLink } = formValues;
 
-      const cardNameValidationRusult = Object.keys(validators.cardName)
-        .map((errorKey) => {
-          const errorResult = validators.cardName[errorKey](cardName);
-          return { [errorKey]: errorResult };
-        })
-        .reduce((acc, element) => ({ ...acc, ...element }), {});
+      const cardNameValidationRusult = validationResult(validators, cardName);
 
       const cardLinkValidationRusult = Object.keys(validators.cardLink)
         .map((errorKey) => {
           const errorResult = validators.cardLink[errorKey](cardLink);
           return { [errorKey]: errorResult };
         })
-        .reduce((acc, element) => ({ ...acc, ...element }), {});
+        .reduce((acc, item) => ({ ...acc, ...item }), {});
 
       setErrors({
         cardName: cardNameValidationRusult,
@@ -86,6 +85,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
   const isСardLinkInvalid = Object.values(errors.cardLink).some(Boolean);
   const isSubmitDisabled = isСardNameInvalid || isСardLinkInvalid;
 
+  const isAnyParamsCardNameValid =
+    errors.cardName.required || errors.cardName.minLength;
+  const isAnyParamsCardLinkValid =
+    errors.cardLink.required || errors.cardLink.url;
+
   return (
     <PopupWithForm
       name="card-add"
@@ -95,6 +99,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       isValidity={isSubmitDisabled}
+      isSubmitting={isSubmitting}
     >
       <fieldset className="form__fields">
         <label className="label">
@@ -102,10 +107,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
             type="text"
             placeholder="Название"
             className={`form__input ${
-              (errors.cardName.required ||
-                errors.cardName.maxLength ||
-                errors.cardName.minLength) &&
-              'form__input_type_error'
+              isСardNameInvalid && 'form__input_type_error'
             }`}
             name="cardName"
             required
@@ -117,19 +119,16 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           />
           <span
             className={`form__error ${
-              (errors.cardName.required ||
-                errors.cardName.maxLength ||
-                errors.cardName.minLength) &&
-              'form__error_visible'
+              isСardNameInvalid && 'form__error_visible'
             }`}
           >
-            {' '}
-            {errors.cardName.required || errors.cardName.minLength
+            {isAnyParamsCardNameValid
               ? errors.cardName.required
                 ? 'Поле обязательно для заполнения'
-                : 'Введите фразу не короче 2 символов'
+                : `Введите фразу не короче ${minInputLength} символов`
               : ''}
-            {errors.cardName.maxLength && 'Превышел лимит в 30 символов'}
+            {errors.cardName.maxLength &&
+              `Превышел лимит в ${maxInputLength} символов`}
           </span>
         </label>
         <label className="label">
@@ -137,8 +136,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
             type="url"
             placeholder="Ссылка на картинку"
             className={`form__input ${
-              (errors.cardLink.required || errors.cardLink.url) &&
-              'form__input_type_error'
+              isСardLinkInvalid && 'form__input_type_error'
             }`}
             name="cardLink"
             required
@@ -148,12 +146,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           />
           <span
             className={`form__error ${
-              (errors.cardLink.required || errors.cardLink.url) &&
-              'form__error_visible'
+              isСardLinkInvalid && 'form__error_visible'
             }`}
           >
             {' '}
-            {errors.cardLink.required || errors.cardLink.url
+            {isAnyParamsCardLinkValid
               ? errors.cardLink.required
                 ? 'Поле обязательно для заполнения'
                 : 'Введите URL'

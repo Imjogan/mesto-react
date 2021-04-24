@@ -1,10 +1,18 @@
 import { useRef, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
+function EditAvatarPopup({
+  isOpen,
+  onClose,
+  onUpdateAvatar,
+  isLoading,
+  isSubmitting,
+}) {
   const avatarValue = useRef();
 
-  useEffect(() => {}, [onUpdateAvatar]);
+  useEffect(() => {
+    avatarValue.current.value = '';
+  }, [isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -22,6 +30,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isSubmitting={isSubmitting}
     >
       <fieldset className="form__fields">
         <label className="label">
