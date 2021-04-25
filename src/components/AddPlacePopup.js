@@ -62,10 +62,10 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
   useEffect(
     function validateInputs() {
       const { cardName, cardLink } = formValues;
+      console.log(validators.cardName)
+      const cardNameValidationResult = validationResult(validators, validators.cardName);
 
-      const cardNameValidationRusult = validationResult(validators, cardName);
-
-      const cardLinkValidationRusult = Object.keys(validators.cardLink)
+      const cardLinkValidationResult = Object.keys(validators.cardLink)
         .map((errorKey) => {
           const errorResult = validators.cardLink[errorKey](cardLink);
           return { [errorKey]: errorResult };
@@ -73,8 +73,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
         .reduce((acc, item) => ({ ...acc, ...item }), {});
 
       setErrors({
-        cardName: cardNameValidationRusult,
-        cardLink: cardLinkValidationRusult,
+        cardName: cardNameValidationResult,
+        cardLink: cardLinkValidationResult,
       });
     },
     [formValues, setErrors]

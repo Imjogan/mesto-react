@@ -1,5 +1,6 @@
 export const validationResult = (validator, fieldName) => {
-  debugger;
+  console.log(validator)
+  console.log(validator.fieldNam)
   Object.keys(validator[fieldName])
     .map((errorKey) => {
       const errorResult = validator[fieldName][errorKey](fieldName);
