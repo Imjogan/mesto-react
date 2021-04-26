@@ -17,7 +17,15 @@ const validators = {
   },
 };
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting }) {
+function AddPlacePopup({
+  isOpen,
+  onClose,
+  onAddPlace,
+  isLoading,
+  isSubmitting,
+}) {
+  const [isDisabledDefault, setIsDisabledDefault] = useState(true);
+
   const [formValues, setFormValues] = useState({
     cardName: '',
     cardLink: '',
@@ -40,6 +48,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
       cardName: '',
       cardLink: '',
     });
+    setIsDisabledDefault(true);
   }, [isOpen]);
 
   const handleSubmit = (evt) => {
@@ -53,6 +62,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
 
   const handleInputChange = useCallback(
     (evt) => {
+      setIsDisabledDefault(false);
       const { name, value } = evt.target;
       setFormValues((state) => ({ ...state, [name]: value }));
     },
@@ -62,16 +72,14 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
   useEffect(
     function validateInputs() {
       const { cardName, cardLink } = formValues;
-      console.log(validators.cardName)
-      const cardNameValidationResult = validationResult(validators, validators.cardName);
-
-      const cardLinkValidationResult = Object.keys(validators.cardLink)
-        .map((errorKey) => {
-          const errorResult = validators.cardLink[errorKey](cardLink);
-          return { [errorKey]: errorResult };
-        })
-        .reduce((acc, item) => ({ ...acc, ...item }), {});
-
+      const cardNameValidationResult = validationResult(
+        validators.cardName,
+        cardName
+      );
+      const cardLinkValidationResult = validationResult(
+        validators.cardLink,
+        cardLink
+      );
       setErrors({
         cardName: cardNameValidationResult,
         cardLink: cardLinkValidationResult,
@@ -100,6 +108,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
       onSubmit={handleSubmit}
       isValidity={isSubmitDisabled}
       isSubmitting={isSubmitting}
+      isDisabledDefault={isDisabledDefault}
     >
       <fieldset className="form__fields">
         <label className="label">
@@ -107,7 +116,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
             type="text"
             placeholder="Название"
             className={`form__input ${
-              isСardNameInvalid && 'form__input_type_error'
+              isDisabledDefault
+                ? ''
+                : isСardNameInvalid && 'form__input_type_error'
             }`}
             name="cardName"
             required
@@ -119,7 +130,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
           />
           <span
             className={`form__error ${
-              isСardNameInvalid && 'form__error_visible'
+              isDisabledDefault
+                ? ''
+                : isСardNameInvalid && 'form__error_visible'
             }`}
           >
             {isAnyParamsCardNameValid
@@ -136,7 +149,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
             type="url"
             placeholder="Ссылка на картинку"
             className={`form__input ${
-              isСardLinkInvalid && 'form__input_type_error'
+              isDisabledDefault
+                ? ''
+                : isСardLinkInvalid && 'form__input_type_error'
             }`}
             name="cardLink"
             required
@@ -146,10 +161,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading, isSubmitting })
           />
           <span
             className={`form__error ${
-              isСardLinkInvalid && 'form__error_visible'
+              isDisabledDefault
+                ? ''
+                : isСardLinkInvalid && 'form__error_visible'
             }`}
           >
-            {' '}
             {isAnyParamsCardLinkValid
               ? errors.cardLink.required
                 ? 'Поле обязательно для заполнения'
