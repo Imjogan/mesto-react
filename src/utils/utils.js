@@ -1,4 +1,4 @@
-export const validationResult = (validator, fieldName) => {
+export const validateField = (validator, fieldName) => {
   return Object.keys(validator)
     .map((errorKey) => {
       const errorResult = validator[errorKey](fieldName);

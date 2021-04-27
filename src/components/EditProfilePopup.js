@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { validationResult } from '../utils/constants';
+import { validateField } from '../utils/utils';
 
-const minUserNameInputLength = 2,
-  minDescriptionInputLength = 2,
-  maxDescriptionInputLength = 200,
-  maxUserNameInputLength = 40;
+const minUserNameInputLength = 2;
+const maxUserNameInputLength = 40;
+const minDescriptionInputLength = 2;
+const maxDescriptionInputLength = 200;
 
 const validators = {
   userName: {
@@ -81,12 +81,12 @@ function EditProfilePopup({
     function validateInputs() {
       const { userName, description } = formValues;
 
-      const userNameValidationRusult = validationResult(
+      const userNameValidationRusult = validateField(
         validators.userName,
         userName
       );
 
-      const descriptionValidationRusult = validationResult(
+      const descriptionValidationRusult = validateField(
         validators.description,
         description
       );
@@ -130,8 +130,8 @@ function EditProfilePopup({
             }`}
             name="userName"
             required
-            minLength="2"
-            maxLength="40"
+            minLength={minUserNameInputLength}
+            maxLength={maxUserNameInputLength}
             id="profile-name-input"
             value={userName}
             onChange={handleInputChange}
@@ -158,8 +158,8 @@ function EditProfilePopup({
             }`}
             name="description"
             required
-            minLength="2"
-            maxLength="100"
+            minLength={minDescriptionInputLength}
+            maxLength={maxDescriptionInputLength}
             id="profile-status-input"
             value={description}
             onChange={handleInputChange}

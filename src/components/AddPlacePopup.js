@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { validationResult } from '../utils/constants';
+import { validateField } from '../utils/utils';
 
-const minInputLength = 2,
-  maxInputLength = 30;
+const minInputLength = 2;
+const maxInputLength = 30;
 
 const validators = {
   cardName: {
@@ -72,11 +72,11 @@ function AddPlacePopup({
   useEffect(
     function validateInputs() {
       const { cardName, cardLink } = formValues;
-      const cardNameValidationResult = validationResult(
+      const cardNameValidationResult = validateField(
         validators.cardName,
         cardName
       );
-      const cardLinkValidationResult = validationResult(
+      const cardLinkValidationResult = validateField(
         validators.cardLink,
         cardLink
       );
@@ -122,8 +122,8 @@ function AddPlacePopup({
             }`}
             name="cardName"
             required
-            minLength="2"
-            maxLength="30"
+            minLength={minInputLength}
+            maxLength={maxInputLength}
             id="card-name-input"
             value={cardName}
             onChange={handleInputChange}
